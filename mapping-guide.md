@@ -49,7 +49,10 @@ A public list is a place to look, not a dataset to load. Automated or bulk uploa
 
 ## 3. The tag table
 
-Applying the correct tag is what makes a feature searchable and correctly rendered. RapiD's preset search handles most of it; these are the targets. Rendering notes are against the standard [OSM Carto style](https://wiki.openstreetmap.org/wiki/OpenStreetMap_Carto/Symbols) — "generic marker" means it is stored correctly but shows a plain dot, so always add a clear `name`.
+Applying the correct tag is what makes a feature searchable and correctly rendered.
+
+> **This table is generated from [`anchor-load-tags.yml`](anchor-load-tags.yml)**, the machine-readable source of truth for the campaign — the same file our contribution counter reads to decide whether an edit counts. It is public so anyone can see exactly what is being counted, and so a tool that wants to work with the campaign has something to parse instead of prose. If you think a category is missing, open an issue: adding one is a one-line change to that file.
+ RapiD's preset search handles most of it; these are the targets. Rendering notes are against the standard [OSM Carto style](https://wiki.openstreetmap.org/wiki/OpenStreetMap_Carto/Symbols) — "generic marker" means it is stored correctly but shows a plain dot, so always add a clear `name`.
 
 > **About `name=*`:** write the facility's real name — `name=Kabale Maize Mill`, or the operator if that is how it is known locally. The `*` is OSM notation for "the actual value goes here"; never type a literal `*`. A name is what turns an anonymous dot into something a planner can identify.
 

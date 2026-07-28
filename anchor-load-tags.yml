@@ -1,0 +1,155 @@
+# Anchor-load tag legend — machine-readable source of truth
+#
+# This file is the SINGLE SOURCE OF TRUTH for which OSM features count as anchor loads
+# in the #AnchorLoads4EnergyAccess campaign. Two consumers read it:
+#
+#   1. Students — via the human-readable table in `mapping-guide.md` §4, which MUST be
+#      regenerated from (or kept identical to) this file.
+#   2. The harvest flow (## workflow-automation) — which matches osmChange element tag
+#      sets against `features[].match` to decide whether a changeset element is an
+#      anchor load.
+#
+# CHANGING THE LEGEND IS A DATA CHANGE, NOT A DEPLOY. Add a feature here (and mirror the
+# row into mapping-guide.md §4); the flow picks it up without a flow edit.
+#
+# Match semantics: an OSM element matches a feature when EVERY key/value pair under
+# `match` is present on the element. `also` lists tags we ask students to add that are
+# NOT required for the match (so a student who omits `name` is still counted).
+# `name_required: true` means the feature is ambiguous without a name and should be
+# harvested but flagged for review when `name` is absent.
+
+version: 1
+updated: 2026-07-28
+owner: cohort-operations
+canonical: https://raw.githubusercontent.com/climate16/anchor-loads/main/anchor-load-tags.yml
+mirrors:
+  human_readable: mapping-guide.md#3-the-tag-table
+  campaign_repo: https://github.com/climate16/anchor-loads
+
+# The campaign hashtag. The harvest filter must match this case-insensitively in BOTH
+# the structured `hashtags` changeset tag (semicolon-delimited, exact token) AND a
+# case-insensitive substring scan of the `comment` changeset tag — only ~23% of
+# changesets carry the structured tag (measured live 2026-07-28, ## workflow-automation),
+# so matching the structured tag alone would silently drop most manual contributors.
+hashtag: "#AnchorLoads4EnergyAccess"
+hashtag_match:
+  structured_tag: hashtags      # semicolon-split, exact token match, case-insensitive
+  freetext_tag: comment         # case-insensitive substring match
+  require: any                  # a changeset qualifies if EITHER matches
+
+categories:
+  agriculture: Agriculture / agro-processing
+  cold_chain: Cold chain
+  commercial: Commercial
+  light_industry: Light industry
+  institutional: Institutional
+  infrastructure: Infrastructure
+
+features:
+  - id: telecom_tower
+    label: Telecom tower (large)
+    category: infrastructure
+    match:
+      man_made: communications_tower
+    also:
+      communication:mobile_phone: "yes"
+
+  - id: telecom_mast
+    label: Telecom mast (small BTS)
+    category: infrastructure
+    match:
+      man_made: mast
+      tower:type: communication
+    also:
+      communication:mobile_phone: "yes"
+
+  - id: agro_mill_large
+    label: Large agro-processing mill
+    category: agriculture
+    match:
+      industrial: grinding_mill
+    name_required: true
+
+  - id: agro_mill_small
+    label: Small grain/maize mill
+    category: agriculture
+    match:
+      craft: grinding_mill
+    also:
+      product: flour
+
+  - id: oil_press
+    label: Oil press
+    category: agriculture
+    match:
+      man_made: works
+      product: oil
+    name_required: true
+
+  - id: marketplace
+    label: Market (including periodic / market-day)
+    category: commercial
+    match:
+      amenity: marketplace
+
+  - id: cold_store
+    label: Cold store / ice maker
+    category: cold_chain
+    match:
+      building: warehouse
+      warehouse: cold_storage
+    name_required: true
+
+  - id: clinic
+    label: Health centre / clinic
+    category: institutional
+    match:
+      amenity: clinic
+
+  - id: hospital
+    label: Hospital
+    category: institutional
+    match:
+      amenity: hospital
+
+  - id: school
+    label: School
+    category: institutional
+    match:
+      amenity: school
+
+  - id: pumping_station
+    label: Powered water pump / pumping station
+    category: infrastructure
+    match:
+      man_made: pumping_station
+    name_required: true
+
+  - id: water_well
+    label: Borehole / well
+    category: infrastructure
+    match:
+      man_made: water_well
+
+  - id: sawmill
+    label: Sawmill
+    category: light_industry
+    match:
+      craft: sawmill
+
+  - id: charging_station
+    label: E-mobility / battery-swap / charging point
+    category: infrastructure
+    match:
+      amenity: charging_station
+
+# Craft workshops other than sawmills are anchor loads too, but `craft=*` is a large open
+# value space. Harvest any `craft` value not already matched above into this catch-all and
+# review the value distribution before promoting frequent ones to their own feature.
+catch_all:
+  - id: craft_workshop_other
+    label: Other craft workshop (welding, carpentry, metalwork…)
+    category: light_industry
+    match_key: craft
+    exclude_values: [grinding_mill, sawmill]
+    review: true
