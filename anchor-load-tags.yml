@@ -18,8 +18,8 @@
 # `name_required: true` means the feature is ambiguous without a name and should be
 # harvested but flagged for review when `name` is absent.
 
-version: 1
-updated: 2026-07-28
+version: 2
+updated: 2026-11-14
 owner: cohort-operations
 canonical: https://raw.githubusercontent.com/climate16/anchor-loads/main/anchor-load-tags.yml
 mirrors:
@@ -44,6 +44,7 @@ categories:
   light_industry: Light industry
   institutional: Institutional
   infrastructure: Infrastructure
+  extractive: Mining and quarrying
 
 features:
   - id: telecom_tower
@@ -142,6 +143,59 @@ features:
     category: infrastructure
     match:
       amenity: charging_station
+
+  - id: irrigated_farm
+    label: Irrigated farm (the load is the pump)
+    category: agriculture
+    match:
+      landuse: farmland
+      irrigation: "yes"
+    review: true
+
+  - id: mine
+    label: Mine
+    category: extractive
+    match:
+      industrial: mine
+
+  - id: mineshaft
+    label: Mine shaft
+    category: extractive
+    match:
+      man_made: mineshaft
+
+  - id: quarry
+    label: Quarry
+    category: extractive
+    match:
+      landuse: quarry
+    name_required: true
+
+  - id: fishing_harbour
+    label: Fish landing site / fishing harbour
+    category: cold_chain
+    match:
+      seamark:harbour:category: fishing
+
+  - id: cotton_gin
+    label: Cotton gin
+    category: agriculture
+    match:
+      industrial: cotton_gin
+    name_required: true
+
+  - id: dairy_plant
+    label: Milk collection centre / dairy
+    category: cold_chain
+    match:
+      industrial: dairy
+    name_required: true
+
+  - id: slaughterhouse
+    label: Slaughterhouse
+    category: cold_chain
+    match:
+      industrial: slaughterhouse
 
 # Craft workshops other than sawmills are anchor loads too, but `craft=*` is a large open
 # value space. Harvest any `craft` value not already matched above into this catch-all and

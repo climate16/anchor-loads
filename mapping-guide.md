@@ -10,8 +10,9 @@ Written for anyone joining the campaign — university cohorts, YouthMappers cha
 
 Facilities whose electricity demand is large and predictable enough to anchor a mini-grid's economics:
 
-- **Agro-processing** — grain and maize mills, oil presses, sawmills, workshops
-- **Cold chain** — cold stores, ice makers
+- **Agro-processing** — grain and maize mills, oil presses, cotton gins, irrigation pumps, sawmills, workshops
+- **Cold chain** — cold stores, ice makers, dairies, slaughterhouses, fish landing sites
+- **Mining and quarrying** — mines, mine shafts, quarries
 - **Water** — powered pumping stations, boreholes
 - **Institutions** — health centres, hospitals, schools
 - **Commerce** — markets, including periodic market grounds
@@ -72,6 +73,14 @@ Applying the correct tag is what makes a feature searchable and correctly render
 | **Borehole / well** | `man_made=water_well` | small icon |
 | **Sawmill / workshop** | `craft=sawmill` (or `craft=*` for other trades) | craft marker |
 | **E-mobility / battery-swap / charging** | `amenity=charging_station` | charging icon |
+| **Irrigated farm** (the load is the pump) | `landuse=farmland` + `irrigation=yes` | farmland area |
+| **Mine** | `industrial=mine` | no dedicated icon |
+| **Mine shaft** | `man_made=mineshaft` | no dedicated icon |
+| **Quarry** | `landuse=quarry` + `name=*` | quarry area |
+| **Fish landing site** | `seamark:harbour:category=fishing` | no dedicated icon |
+| **Cotton gin** | `industrial=cotton_gin` + `name=*` | no dedicated icon |
+| **Milk collection centre / dairy** | `industrial=dairy` + `name=*` | no dedicated icon |
+| **Slaughterhouse** | `industrial=slaughterhouse` | no dedicated icon |
 
 Unsure which tag fits? Add a clear `name` and `description`, apply the closest preset, and add a `fixme=*` note. Do not invent a tag you are not sure of.
 
